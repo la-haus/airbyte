@@ -1,0 +1,22 @@
+data:
+  allowedHosts:
+    hosts:
+      - TODO # Please change to the hostname of the source.
+  registries:
+    oss:
+      enabled: false
+  connectorSubtype: api
+  connectorType: source
+  definitionId: a25ef172-34c0-40e3-b7ef-6a02ce0d5545
+  dockerImageTag: 0.1.0
+  dockerRepository: airbyte/source-hubspot-history-deals
+  githubIssueLabel: source-hubspot-history-deals
+  icon: hubspot-history-deals.svg
+  license: MIT
+  name: Hubspot History Deals
+  releaseDate: TODO
+  releaseStage: alpha
+  documentationUrl: https://docs.airbyte.com/integrations/sources/hubspot-history-deals
+  tags:
+    - language:python
+metadataSpecVersion: "1.0"
