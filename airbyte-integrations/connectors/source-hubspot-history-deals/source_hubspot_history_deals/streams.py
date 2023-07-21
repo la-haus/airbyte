@@ -199,7 +199,8 @@ class API:
     ) -> Tuple[Union[MutableMapping[str, Any], List[MutableMapping[str, Any]]], requests.Response]:
         response = self._session.get(self.BASE_URL + url, params=params)
         logger.info("POR ACA VA EL CODIGO!!!!!!! AUXILIO GFDGGHGDHDGDGFDGDFG")
-        logger.info(self.BASE_URL + url)
+        logger.info(self.BASE_URL)
+        logger.info(url)
         logger.info(params)
         return self._parse_and_handle_errors(response), response
 
@@ -306,11 +307,14 @@ class Stream(HttpStream, ABC):
         stream_slice: Mapping[str, Any] = None,
         next_page_token: Mapping[str, Any] = None,
     ) -> str:
+        logging.info('retorna la url dfgghghffghjfhjghjhgfjh')
+        logging.info(self.url)
         return self.url
 
     @cached_property
     def _property_wrapper(self) -> IURLPropertyRepresentation:
         properties = list(self.properties.keys())
+        
         if "v1" in self.url:
             return APIv1Property(properties)
         return APIv3Property(properties)
@@ -700,8 +704,10 @@ class Stream(HttpStream, ABC):
     @lru_cache()
     def properties(self) -> Mapping[str, Any]:
         """Some entities has dynamic set of properties, so we trying to resolve those at runtime"""
+        logger.info("aqui paso las propiedades********************+")
         props = {}
         if not self.entity:
+            logger.info("aqui retorma los datos!!!!!!!!!")
             return props
         if not self.properties_scope_is_granted():
             logger.warning(
@@ -709,8 +715,8 @@ class Stream(HttpStream, ABC):
                 f"to be able to fetch all properties available."
             )
             return props
-        data, response = self._api.get(f"/properties/v2/{self.entity}/properties")
-        
+        data, response = self._api.get(f"/deals/v1/deal/paged?")
+        logger.info("aqui retorma los datos!!!!!!!!!")
         for row in data:
             props[row["name"]] = self._get_field_props(row["type"])
 
@@ -1265,7 +1271,7 @@ class PropertyHistory(Stream):
     """
    
     more_key = "has-more"
-    url = "/deals/v1/deal/paged" #/deals/v1/deal/paged"   /crm/v3/objects/deals  deals/v1/deal/paged
+    url = "deals/v1/deal/paged?" #/deals/v1/deal/paged"   /crm/v3/objects/deals  deals/v1/deal/paged
     
     #https://api.hubapi.com/deals/v1/deal/paged?propertiesWithHistory=dealname&propertiesWithHistory=dealstage&limit=250 postman
     
@@ -1289,7 +1295,7 @@ class PropertyHistory(Stream):
         stream_slice: Mapping[str, Any] = None,
         next_page_token: Mapping[str, Any] = None,
     ) -> MutableMapping[str, Any]:
-        params = {self.limit_field: self.limit, "propertiesWithHistory":"dealstage" } # "propertyMode": "value_and_history"
+        params = {self.limit_field: self.limit,"propertyMode": "value_and_history"  } #  "propertiesWithHistory":"dealstage"
         if next_page_token:
             params.update(next_page_token)
         return params

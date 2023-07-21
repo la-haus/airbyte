@@ -273,7 +273,6 @@ class SourceHubspotHistoryDeals(AbstractSource):
         credentials = config.get("credentials", {})
         common_params = self.get_common_params(config=config)
         self.logger.info("ESTA ES LA PARTE DE STRAM PARA VALIDAR CONFIGURACION AQUI VOY!!!!!!!!!!")
-        self.logger.info(config)
         streams = [
             Contacts(**common_params),
             Deals(**common_params),
